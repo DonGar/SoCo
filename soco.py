@@ -49,7 +49,7 @@ class SoCo(object):
         speaker will be returned.
 
         """
-        if uri is not '':
+        if uri != '':
             action = '"urn:schemas-upnp-org:service:AVTransport:1#SetAVTransportURI"'
 
             body = '<u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"><InstanceID>0</InstanceID><CurrentURI>' + uri + '</CurrentURI><CurrentURIMetaData></CurrentURIMetaData></u:SetAVTransportURI>'
@@ -183,7 +183,7 @@ class SoCo(object):
         speaker will be returned.
         
         """
-        if mute is True:
+        if mute:
             mute_value = '1'
         else:
             mute_value = '0'
@@ -342,7 +342,7 @@ class SoCo(object):
         """
         action = '"urn:schemas-upnp-org:service:RenderingControl:1#SetLoudness"'
 
-        if loudness is True:
+        if loudness:
             loudness_value = '1'
         else:
             loudness_value = '0'
@@ -385,7 +385,7 @@ class SoCo(object):
             if not (ip == self.speaker_ip):
                 Slave = SoCo(ip)
                 ret = Slave.join(master_speaker_info["uid"])
-                if ret is False:
+                if not ret:
                     rc = False
 			
         return rc
@@ -456,7 +456,7 @@ class SoCo(object):
         speaker will be returned.
         
         """
-        if led_on is True:
+        if led_on:
             led_state = 'On'
         else:
             led_state = 'Off'
@@ -504,7 +504,7 @@ class SoCo(object):
 
         # If the speaker is playing from the line-in source, querying for track
         # metadata will return "NOT_IMPLEMENTED".
-        if d is not '' or d is not 'NOT_IMPLEMENTED':
+        if d != '' and d != 'NOT_IMPLEMENTED':
             # Track metadata is returned in DIDL-Lite format
             metadata = XML.fromstring(d.encode('utf-8'))
 
@@ -514,7 +514,7 @@ class SoCo(object):
 
             album_art = metadata.findtext('.//{urn:schemas-upnp-org:metadata-1-0/upnp/}albumArtURI')
 
-            if album_art is not None:
+            if album_art:
                 track['album_art'] = 'http://' + self.speaker_ip + ':1400' + metadata.findtext('.//{urn:schemas-upnp-org:metadata-1-0/upnp/}albumArtURI')
             else:
                 track['album_art'] = ''
@@ -537,7 +537,7 @@ class SoCo(object):
         Zone Name.
 
         """
-        if self.speaker_info and refresh is False:
+        if self.speaker_info and not refresh:
             return self.speaker_info
         else:
             response = requests.get('http://' + self.speaker_ip + ':1400/status/zp')
@@ -567,7 +567,7 @@ class SoCo(object):
 
         """
 
-        if self.speakers_ip and refresh is False:
+        if self.speakers_ip and not refresh:
             return self.speakers_ip
         else:
             response = requests.get('http://' + self.speaker_ip + ':1400/status/topology')
@@ -613,7 +613,7 @@ class SoCo(object):
 
         errorCode = error.findtext('.//{urn:schemas-upnp-org:control-1-0}errorCode')
 
-        if errorCode is not None:
+        if errorCode != None:
             return int(errorCode)
         else:
             # Unknown error, so just return the entire response

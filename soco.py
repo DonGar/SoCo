@@ -29,10 +29,9 @@ class SoCo(object):
     RENDERING_ENDPOINT = '/MediaRenderer/RenderingControl/Control'
     DEVICE_ENDPOINT = '/DeviceProperties/Control'
 
-    speaker_info = {} # Stores information about the current speaker
-    speakers_ip = [] # Stores the IP addresses of all the speakers in a network
-
     def __init__(self, speaker_ip):
+        self.speaker_info = {} # Stores information about the current speaker
+        self.speakers_ip = [] # Stores the IP addresses of all the speakers in a network
         self.speaker_ip = speaker_ip
 
     def play(self, uri=''):
@@ -428,9 +427,9 @@ class SoCo(object):
         """
         action = '"urn:schemas-upnp-org:service:AVTransport:1#SetAVTransportURI"'
 
-        speaker_info = self.get_speaker_info()
+        self.speaker_info = self.get_speaker_info()
 
-        body = '<u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"><InstanceID>0</InstanceID><CurrentURI>x-rincon-stream:' + speaker_info['uid'] + '</CurrentURI><CurrentURIMetaData></CurrentURIMetaData></u:SetAVTransportURI>'
+        body = '<u:SetAVTransportURI xmlns:u="urn:schemas-upnp-org:service:AVTransport:1"><InstanceID>0</InstanceID><CurrentURI>x-rincon-stream:' + self.speaker_info['uid'] + '</CurrentURI><CurrentURIMetaData></CurrentURIMetaData></u:SetAVTransportURI>'
 
         response = self.__send_command(SoCo.TRANSPORT_ENDPOINT, action, body)
 

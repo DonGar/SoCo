@@ -1,2 +1,9 @@
+
+# To make it easier to exist in a virtualenv
+.Python
+bin
+include
+lib
+
 .DS_Store
 *.pyc
